@@ -1,0 +1,46 @@
+﻿@model CisEng.Models.Taining
+
+@{
+    ViewData["Title"] = "Edit";
+}
+
+<h1>Edit</h1>
+
+<h4>Taining</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Edit">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input type="hidden" asp-for="id" />
+            <div class="form-group">
+                <label asp-for="technology" class="control-label"></label>
+                <input asp-for="technology" class="form-control" />
+                <span asp-validation-for="technology" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="place" class="control-label"></label>
+                <input asp-for="place" class="form-control" />
+                <span asp-validation-for="place" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="time" class="control-label"></label>
+                <input asp-for="time" class="form-control" />
+                <span asp-validation-for="time" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="sponser" class="control-label"></label>
+                <input asp-for="sponser" class="form-control" />
+                <span asp-validation-for="sponser" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Save" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+

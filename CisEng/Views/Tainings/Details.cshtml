@@ -1,0 +1,42 @@
+﻿@model CisEng.Models.Taining
+
+@{
+    ViewData["Title"] = "Details";
+}
+
+<h1>Details</h1>
+
+<div>
+    <h4>Taining</h4>
+    <hr />
+    <dl class="row">
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.technology)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.technology)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.place)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.place)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.time)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.time)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.sponser)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.sponser)
+        </dd>
+    </dl>
+</div>
+<div>
+    <a asp-action="Edit" asp-route-id="@Model.id">Edit</a> |
+    <a asp-action="Index">Back to List</a>
+</div>

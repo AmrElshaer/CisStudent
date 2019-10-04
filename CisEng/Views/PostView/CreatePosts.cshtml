@@ -1,0 +1,81 @@
+﻿@model CisEng.Models.Posts
+
+@{
+    ViewData["Title"] = "CreatePosts";
+}
+<link href="~/lib/twitter-bootstrap/css/bootstrap.min.css" rel="stylesheet" />
+<script src="~/lib/jquery/jquery.min.js"></script>
+<script src="~/lib/twitter-bootstrap/js/bootstrap.min.js"></script>
+<link href="https://cdn.jsdelivr.net/npm/froala-editor@3.0.0-beta.1/css/froala_editor.pkgd.min.css" rel="stylesheet" type="text/css" />
+
+<!-- Include Editor JS files. -->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+
+<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/froala-editor@3.0.0-beta.1//js/froala_editor.pkgd.min.js"></script>
+
+
+<div class="container">
+    <div class="row">
+        <div class="col-md-4" style="    margin: auto;
+    margin-top: 5%;">
+            <form asp-action="CreatePosts" method="post">
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                <div class="form-group">
+                    <label asp-for="Title" class="control-label">Title</label>
+                    <input asp-for="Title" class="form-control"  name="Title"/>
+                    <span asp-validation-for="Title" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="Technology" class="control-label">Technology</label>
+                    <input asp-for="Technology" class="form-control" name="Technology" />
+                    <span asp-validation-for="Technology" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="Postcontaint" class="control-label">Description</label>
+                    <textarea id="Postcontaint" asp-for="Postcontaint" class="form-control" name="Postcontaint"></textarea>
+                    <span asp-validation-for="Postcontaint" class="text-danger"></span>
+                </div>
+                <div class="form-group" style="display:none">
+                    <label asp-for="CisStudentId" class="control-label"></label>
+                    <input asp-for="CisStudentId" class="form-control" value="@ViewData["Id"]" name="CisStudentId"/>
+                    <span asp-validation-for="CisStudentId" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="PostPrivate" class="control-label">
+                        @Html.DisplayNameFor(model => model.PostPrivte)
+                    </label>
+                    <select asp-for="PostPrivate" name="PostPrivte">
+                        <option value="true">True</option>
+                        <option value="false">False</option>
+                    </select>
+                  
+                </div>
+                <div class="form-group">
+                    <input type="submit" value="Create" class="btn btn-primary" />
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+<div>
+   
+</div><style>
+    #emoticons-1 {
+        display: none;
+    }
+</style>
+<script>
+    new FroalaEditor('#Postcontaint', {
+        // Set the image upload URL.
+        imageUploadURL: '/UploadImage',
+
+        imageUploadParams: {
+            id: 'my_editor'
+        },
+         fileUploadURL: '/UploadFiles',
+
+      fileUploadParams: {
+        id: 'my_editor'
+      }
+    })
+</script>
