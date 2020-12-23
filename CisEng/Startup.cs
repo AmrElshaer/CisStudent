@@ -1,19 +1,18 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Linq;
-using System.Threading.Tasks;
-using CisEng.Data;
+using System.Reflection;
+using Application;
+using CisEng.Common;
+using Infrastructure;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.FileProviders;
-using Microsoft.Extensions.Logging;
-using Microsoft.Extensions.Options;
+using Microsoft.OpenApi.Models;
+using Persistence;
 
 namespace CisEng
 {
@@ -25,12 +24,13 @@ namespace CisEng
             Configuration = configuration;
             _environment = environment;
         }
-      
         public IConfiguration Configuration { get; }
 
         private readonly IHostingEnvironment _environment;
-
-        // This method gets called by the runtime. Use this method to add services to the container.
+        /// <summary>
+       /// This method gets called by the runtime. Use this method to add services to the container.
+        /// </summary>
+        /// <param name="services"></param>
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddCors(options =>
@@ -41,32 +41,81 @@ namespace CisEng
                     builder.WithOrigins().AllowAnyHeader().AllowAnyMethod().AllowAnyOrigin();
                 });
             });
-            services.AddDbContext<AppDbContext>(item => item.UseSqlServer(Configuration.GetConnectionString("BlogDBConnection")));
+            services.AddInfrastructure(Configuration);
+            services.AddPersistance(Configuration);
+            services.AddApplication();
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
-        }
+            
+            services.AddSwaggerGen(c =>
+            {
+                c.SwaggerDoc("v1", new OpenApiInfo { Title = "CisEng Api", Version = "v1", });
+                // To Enable authorization using Swagger (JWT)  
+                c.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme()
+                {
+                    Name = "Authorization",
+                    Type = SecuritySchemeType.ApiKey,
+                    Scheme = "Bearer",
+                    BearerFormat = "JWT",
+                    In = ParameterLocation.Header,
+                    Description = "JWT Authorization header using the Bearer scheme. \r\n\r\n Enter 'Bearer' [space] and then your token in the text input below.\r\n\r\nExample: \"Bearer 12345abcdef\"",
+                });
+                c.AddSecurityRequirement(new OpenApiSecurityRequirement
+                {
+                    {
+                          new OpenApiSecurityScheme
+                            {
+                                Reference = new OpenApiReference
+                                {
+                                    Type = ReferenceType.SecurityScheme,
+                                    Id = "Bearer"
+                                }
+                            },
+                            new string[] {}
 
-        // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
+                    }
+                });
+                var xmlFile = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
+                var xmlPath = Path.Combine(AppContext.BaseDirectory, xmlFile);
+                c.IncludeXmlComments(xmlPath);
+            });
+        }
+        /// <summary>
+        ///  This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
+        /// </summary>
+        /// <param name="app"></param>
+        /// <param name="env"></param>
         public void Configure(IApplicationBuilder app, IHostingEnvironment env)
         {
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
+                app.UseDatabaseErrorPage();
             }
-            var folderName = Path.Combine(_environment.WebRootPath, "upload");
+            else {
+                app.UseExceptionHandler("/Error");
+                // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
+                app.UseHsts();
+            }
+            app.UseCustomExceptionHandler();
+           
             app.UseHttpsRedirection();
-            
             app.UseStaticFiles();
-            app.UseCors("allowcors");
-            app.UseStaticFiles(new StaticFileOptions()
+            // Enable middleware to serve generated Swagger as a JSON endpoint.
+            app.UseSwagger();
+
+            // Enable middleware to serve swagger-ui (HTML, JS, CSS, etc.),
+            // specifying the Swagger JSON endpoint.
+            app.UseSwaggerUI(c =>
             {
-                FileProvider = new PhysicalFileProvider(Path.Combine(Directory.GetCurrentDirectory(), folderName)),
-                RequestPath = new PathString("/"+this._environment.WebRootPath)
+                c.SwaggerEndpoint("/swagger/v1/swagger.json", "My API V1");
             });
+            app.UseCors("allowcors");
+            app.UseAuthentication();
             app.UseMvc(routes =>
             {
                 routes.MapRoute(
                     name: "default",
-                    template: "{controller=Home}/{action=Index}/{id?}");
+                    template: "api/{controller=Account}/{action=Test}/{id?}");
             });
            
             

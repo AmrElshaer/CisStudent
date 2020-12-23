@@ -5,17 +5,65 @@
     <AspNetCoreHostingModel>InProcess</AspNetCoreHostingModel>
     <UserSecretsId>08d5983c-7548-4d53-8973-2be16b599105</UserSecretsId>
   </PropertyGroup>
+  <PropertyGroup>
+    <GenerateDocumentationFile>true</GenerateDocumentationFile>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+    <DocumentationFile></DocumentationFile>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Remove="Views\**" />
+    <Content Remove="Views\**" />
+    <EmbeddedResource Remove="Views\**" />
+    <None Remove="Views\**" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Remove="Controllers\AllpublicpostsController.cs" />
+    <Compile Remove="Controllers\AppliesforTrainingsController.cs" />
+    <Compile Remove="Controllers\ApplyJobsController.cs" />
+    <Compile Remove="Controllers\CisStudentsController.cs" />
+    <Compile Remove="Controllers\CommentApiController.cs" />
+    <Compile Remove="Controllers\CommentsController.cs" />
+    <Compile Remove="Controllers\FollowusController.cs" />
+    <Compile Remove="Controllers\ImageController.cs" />
+    <Compile Remove="Controllers\JobsController.cs" />
+    <Compile Remove="Controllers\JobsViewsController.cs" />
+    <Compile Remove="Controllers\PostsController.cs" />
+    <Compile Remove="Controllers\PostViewController.cs" />
+    <Compile Remove="Controllers\PrivatePostController.cs" />
+    <Compile Remove="Controllers\ProfilesController.cs" />
+    <Compile Remove="Controllers\RegisterController.cs" />
+    <Compile Remove="Controllers\ResponsetoCommentApiController.cs" />
+    <Compile Remove="Controllers\ResponsetoCommentsController.cs" />
+    <Compile Remove="Controllers\ResponsetoResonseController.cs" />
+    <Compile Remove="Controllers\responsetoresponesController.cs" />
+    <Compile Remove="Controllers\Tainings1Controller.cs" />
+    <Compile Remove="Controllers\TainingsController.cs" />
+  </ItemGroup>
 
   <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.App" />
     <PackageReference Include="Microsoft.AspNetCore.Razor.Design" Version="2.2.0" PrivateAssets="All" />
-    <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="2.2.3" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="2.2.0">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+    <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="2.2.4" />
+    <PackageReference Include="Swashbuckle.AspNetCore" Version="5.2.0" />
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="NewFolder\" />
     <Folder Include="Resources\Images\" />
     <Folder Include="wwwroot\uploads\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Application\Application.csproj" />
+    <ProjectReference Include="..\Domain\Domain.csproj" />
+    <ProjectReference Include="..\Infrastructure\Infrastructure.csproj" />
+    <ProjectReference Include="..\Persistence\Persistence.csproj" />
   </ItemGroup>
   
 </Project>
