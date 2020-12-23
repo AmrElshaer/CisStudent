@@ -8,8 +8,8 @@ Project is created with:
 * MediatoR
 * C#
 * Fluent Validation
-*AutoMapper
-*Swagger for Documentation Api
+* AutoMapper
+* Swagger for Documentation Api
 
 ## Pattern and Architecture
 Project is created with:
