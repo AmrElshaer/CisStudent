@@ -7,6 +7,9 @@ using System.Text;
 
 namespace Application.Common.Mappings
 {
+    /// <summary>
+    /// Instead of add all mapping in on profile
+    /// </summary>
     public class MappingProfile:Profile
     {
         public MappingProfile()
@@ -16,7 +19,7 @@ namespace Application.Common.Mappings
         private void ApplyMappingsFromAssembly(Assembly assembly)
         {
             var types = assembly.GetExportedTypes()
-                .Where(t => t.GetInterfaces().Any(i =>i.BaseType == typeof(IMapFrom)))
+                 .Where(x => typeof(IMapFrom).IsAssignableFrom(x) && !x.IsInterface && !x.IsAbstract)
                 .ToList();
 
             foreach (var type in types)

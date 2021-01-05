@@ -8,6 +8,6 @@ namespace Application.Common.Interfaces
 {
      public interface IJwtFactoryService
     {
-        Task<string> GenerateEncodedToken(string userName);
+        Task<string> GenerateEncodedToken(string userName,int id);
     }
 }

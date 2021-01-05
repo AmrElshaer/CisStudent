@@ -5,6 +5,7 @@ using Microsoft.Extensions.DependencyInjection;
 using System.Reflection;
 using FluentValidation;
 using Application.Common.Interfaces;
+using Application.Common.Mappings;
 
 namespace Application
 {
@@ -12,7 +13,7 @@ namespace Application
     {
         public static IServiceCollection AddApplication(this IServiceCollection services)
         {
-            services.AddAutoMapper(Assembly.GetExecutingAssembly());
+            services.AddAutoMapper(typeof(MappingProfile).Assembly);
             services.AddMediatR(Assembly.GetExecutingAssembly());
             // For all the validators, register them with dependency injection as scoped
             AssemblyScanner.FindValidatorsInAssembly(typeof(ICisEngDbContext).Assembly)

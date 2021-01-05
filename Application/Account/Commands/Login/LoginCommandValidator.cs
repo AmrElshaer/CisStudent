@@ -17,7 +17,7 @@ namespace Application.Account.Commands.Login
                 {
                      var isRegister =  userManager.UserIsRegister(d.Email,d.Password).GetAwaiter().GetResult();
                      if (!isRegister)
-                             context.AddFailure("","Email or Password are UnCorrect");
+                             context.AddFailure("","Email or Password are Incorrect");
                 }
                
             });

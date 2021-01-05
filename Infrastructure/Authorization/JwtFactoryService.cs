@@ -13,11 +13,13 @@ namespace Infrastructure.Authorization
         {
             _jwtOptions = jwtOptions.Value;
         }
-        public async Task<string> GenerateEncodedToken(string userName)
+        public async Task<string> GenerateEncodedToken(string userName,int id)
         {
             var claims = new[]
             {
                  new Claim(JwtRegisteredClaimNames.Sub, userName),
+                 new Claim("name",userName),
+                 new Claim("id",id.ToString()),
                  new Claim(JwtRegisteredClaimNames.Jti, await _jwtOptions.JtiGenerator()),
             };
             var jwt = new JwtSecurityToken(

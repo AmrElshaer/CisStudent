@@ -4,6 +4,8 @@ using Application.Account.Commands.Register;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Authorization;
+using CisEng.models;
+
 namespace CisEng.Controllers
 {
     /// <summary>
@@ -17,7 +19,7 @@ namespace CisEng.Controllers
         /// </summary>
         /// <param name="command"></param>
         /// <returns></returns>
-        
+
         [HttpPost]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesDefaultResponseType]
@@ -27,19 +29,20 @@ namespace CisEng.Controllers
             await Mediator.Send(command);
             return NoContent();
         }
-       /// <summary>
-       /// Login User 
-       /// </summary>
-       /// <param name="command"></param>
-       /// <returns></returns>
+        /// <summary>
+        /// Login User
+        /// </summary>
+        /// <param name="command"></param>
+        /// <returns></returns>
         [HttpPost]
-        [ProducesResponseType(StatusCodes.Status200OK,Type =typeof(string))]
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(JwtToken))]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public async Task<ActionResult<string>> Login([FromBody]LoginCommand command)
+        public async Task<ActionResult<JwtToken>> Login([FromBody]LoginCommand command)
         {
-               var token= await Mediator.Send(command);
-               return Ok(token);
+               var result= await Mediator.Send(command);
+               return Ok(new JwtToken{ Token = result.token,Image=result.image });
             
         }
+
     }
 }
