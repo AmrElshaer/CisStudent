@@ -12,9 +12,7 @@ namespace Domain.Entities
         }
         public int Id { get; set; }
         public string Title { get; set; }
-        public string Technology { get; set; }
         public string Content { get; set; }
-        public bool IsPrivate { get; set; }
         public DateTime CreateDate { get; set; }
         public int CisStudentId { get; set; }
         public CisStudent CisStudent { get; set; }
