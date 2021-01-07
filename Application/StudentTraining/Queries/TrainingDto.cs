@@ -1,12 +1,11 @@
-﻿using System.Collections.Generic;
-namespace Domain.Entities
+﻿using Application.Account;
+using Application.Common.Mappings;
+using Domain.Entities;
+using System;
+namespace Application.StudentTraining.Queries
 {
-    public class Training
+    public class TrainingDto : IMapFrom
     {
-        public Training()
-        {
-            Applies = new HashSet<ApplyTraining>();
-        }
         public int Id { get; set; }
         public string Technology { get; set; }
         public string Place { get; set; }
@@ -14,6 +13,9 @@ namespace Domain.Entities
         public string Content { get; set; }
         public int CisStudentId { get; set; }
         public CisStudent CisStudent { get; set; }
-        public ICollection<ApplyTraining> Applies { get; set; }
+        public void Mapping(AutoMapper.Profile profile)
+        {
+            profile.CreateMap<Training, TrainingDto>();
+        }
     }
 }
