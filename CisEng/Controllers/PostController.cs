@@ -5,6 +5,8 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
+using System.Collections.Generic;
+
 namespace CisEng.Controllers
 {
     /// <summary>
@@ -50,6 +52,19 @@ namespace CisEng.Controllers
         public async Task<ActionResult<PostDto>> GetAllPost(int studentId)
         {
             var entityDto = await Mediator.Send(new GetAllPostQuery() { StudentId=studentId });
+            return Ok(entityDto);
+        }
+        /// <summary>
+        /// Get All StudentsPosts
+        /// </summary>
+        /// <returns></returns>
+        [HttpGet]
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(IList<PostDto>))]
+        [ProducesDefaultResponseType]
+        [AllowAnonymous]
+        public async Task<ActionResult<PostDto>> GetStudentsPosts()
+        {
+            var entityDto = await Mediator.Send(new GetStudentsPostsQuery());
             return Ok(entityDto);
         }
         /// <summary>
