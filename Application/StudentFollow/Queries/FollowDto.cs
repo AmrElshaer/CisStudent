@@ -1,9 +1,12 @@
 ﻿using Application.Account;
+using Application.Common.Mappings;
+using AutoMapper;
+using Domain.Entities;
 using System;
 
 namespace Application.StudentFollow.Queries
 {
-    public class FollowDto
+    public class FollowDto:IMapFrom
     {
         public int Id { get; set; }
         public DateTime CreateDate { get; set; }
@@ -13,5 +16,9 @@ namespace Application.StudentFollow.Queries
         public int? CisStudentRecieveId { get; set; }
         public CisStudentDto CisStudentRecieve { get; set; }
 
+        public void Mapping(AutoMapper.Profile profile)
+        {
+            profile.CreateMap<Follow, FollowDto>();
+        }
     }
 }

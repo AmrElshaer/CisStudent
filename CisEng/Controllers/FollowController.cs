@@ -32,9 +32,9 @@ namespace CisEng.Controllers
         /// <param name="haveFollowQuery"></param>
         /// <returns></returns>
         [HttpPost]
-        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(bool))]
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(FollowDto))]
         [ProducesDefaultResponseType]
-        public async Task<ActionResult<bool>> HaveFollow(HaveFollowQuery haveFollowQuery)
+        public async Task<ActionResult<FollowDto>> HaveFollow(HaveFollowQuery haveFollowQuery)
         {
             var entityDto = await Mediator.Send(haveFollowQuery);
             return Ok(entityDto);

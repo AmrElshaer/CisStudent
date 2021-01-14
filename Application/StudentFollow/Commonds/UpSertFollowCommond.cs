@@ -14,7 +14,7 @@ namespace Application.StudentFollow.Commonds
         public bool IsAccepte { get; set; }
         public int? CisStudentSendId { get; set; }
         public int? CisStudentRecieveId { get; set; }
-        public class UpSertFollowCommondHandler
+        public class UpSertFollowCommondHandler:IRequestHandler<UpSertFollowCommond,int>
         {
             private readonly ICisEngDbContext _cisEngDbContext;
             public UpSertFollowCommondHandler(ICisEngDbContext cisEngDbContext)

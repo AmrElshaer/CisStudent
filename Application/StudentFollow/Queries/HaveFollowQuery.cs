@@ -8,11 +8,11 @@ using System.Threading;
 using System.Threading.Tasks;
 namespace Application.StudentFollow.Queries
 {
-    public class HaveFollowQuery:IRequest<bool>
+    public class HaveFollowQuery:IRequest<FollowDto>
     {
         public int SendId { get; set; }
         public int ReceiveId { get; set; }
-        public class HaveFollowQueryHandler : IRequestHandler<HaveFollowQuery, bool>
+        public class HaveFollowQueryHandler : IRequestHandler<HaveFollowQuery, FollowDto>
         {
             private readonly ICisEngDbContext _cisEngDbContext;
             private readonly IMapper _mapper;
@@ -22,14 +22,15 @@ namespace Application.StudentFollow.Queries
                 _cisEngDbContext = cisEngDbContext;
                 _mapper = mapper;
             }
-            public async Task<bool> Handle(HaveFollowQuery request, CancellationToken cancellationToken)
+            public async Task<FollowDto> Handle(HaveFollowQuery request, CancellationToken cancellationToken)
             {
                 var entity = await _cisEngDbContext.Follows.FirstOrDefaultAsync(f=>f.CisStudentSendId==request.SendId&&f.CisStudentRecieveId==request.ReceiveId);
                 if (entity == null)
                 {
-                    return false;
+                    throw new NotFoundException(nameof(FollowDto), request.SendId);
                 }
-                return true;
+                var entityDto= this._mapper.Map<FollowDto>(entity);
+                return entityDto;
             }
         }
     }
