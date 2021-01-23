@@ -3,6 +3,7 @@ using Application.StudentFollow.Queries;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace CisEng.Controllers
@@ -51,6 +52,19 @@ namespace CisEng.Controllers
         {
             await Mediator.Send(new DeleteFollowCommond() { Id = id });
             return Ok();
+        }
+        /// <summary>
+        /// Get All Followers For student
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        [HttpGet]
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(IEnumerable<FollowDto>))]
+        [ProducesDefaultResponseType]
+        public async Task<ActionResult> GetFollowers(int id)
+        {
+            var followers= await Mediator.Send(new GetFollowers() { StudentId=id});
+            return Ok(followers);
         }
     }
 }
