@@ -3,6 +3,7 @@ using Application.Common.Interfaces;
 using AutoMapper;
 using Domain.Entities;
 using MediatR;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Threading;
 using System.Threading.Tasks;
@@ -23,7 +24,8 @@ namespace Application.StudentPost.Queries
             }
             public async Task<PostDto> Handle(GetPostQuery request, CancellationToken cancellationToken)
             {
-                var entity = await _cisEngDbContext.Posts.FindAsync(request.Id);
+                var entity = await _cisEngDbContext.Posts.Include(a=>a.CisStudent).Include(a=>a.Comments).ThenInclude(a=>a.CisStudent)
+                    .FirstOrDefaultAsync(a=>a.Id==request.Id);
                 if (entity == null)
                 {
                     throw new NotFoundException(nameof(Post), request.Id);
