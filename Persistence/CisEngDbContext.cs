@@ -27,7 +27,6 @@ namespace Persistence
         public DbSet<ResponseToComment> ResponseToComments { get; set; }
         public DbSet<Follow> Follows { get; set; }
         public DbSet<Profile> Profiles { get; set; }
-        
-
+        public DbSet<ResponseToResponse> ResponseToResponses { get; set; }
     }
 }
