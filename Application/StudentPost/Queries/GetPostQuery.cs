@@ -24,7 +24,8 @@ namespace Application.StudentPost.Queries
             }
             public async Task<PostDto> Handle(GetPostQuery request, CancellationToken cancellationToken)
             {
-                var entity = await _cisEngDbContext.Posts.Include(a=>a.CisStudent).Include(a=>a.Comments).ThenInclude(a=>a.CisStudent)
+                var entity = await _cisEngDbContext.Posts.Include(a => a.CisStudent).Include(a => a.Comments)
+                    .ThenInclude(a => a.ResponseToComments).Include(a=>a.Comments).ThenInclude(a=>a.CisStudent)
                     .FirstOrDefaultAsync(a=>a.Id==request.Id);
                 if (entity == null)
                 {

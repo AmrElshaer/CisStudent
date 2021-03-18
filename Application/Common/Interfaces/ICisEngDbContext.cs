@@ -17,6 +17,8 @@ namespace Application.Common.Interfaces
          DbSet<ResponseToComment> ResponseToComments { get; set; }
          DbSet<Follow> Follows { get; set; }
          DbSet<Profile> Profiles { get; set; }
+         DbSet<Domain.Entities.ResponseToResponse> ResponseToResponses { get; set; }
         Task<int> SaveChangesAsync(CancellationToken cancellationToken);
+        
     }
 }

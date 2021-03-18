@@ -9,6 +9,10 @@ namespace Application.StudentPost.Queries
 {
     public class PostDto : IMapFrom
     {
+        public PostDto()
+        {
+            Comments = new List<CommentDto>();
+        }
         public int Id { get; set; }
         public string Title { get; set; }
         public string Content { get; set; }

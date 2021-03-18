@@ -29,6 +29,7 @@ namespace Domain.Entities
         public ICollection<ApplyTraining> ApplyTrainings { get; set; }
         public ICollection<Comment> Comments { get; set; }
         public ICollection<ResponseToComment> ResponseToComments { get; set; }
+        public ICollection<ResponseToResponse> ResponseToResponses { get; set; }
 
     }
 }
