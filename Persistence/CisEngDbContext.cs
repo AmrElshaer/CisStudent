@@ -24,9 +24,7 @@ namespace Persistence
         public DbSet<ApplyTraining> ApplyTrainings { get; set; }
         public DbSet<Post> Posts { get; set; }
         public DbSet<Comment> Comments { get; set; }
-        public DbSet<ResponseToComment> ResponseToComments { get; set; }
         public DbSet<Follow> Follows { get; set; }
         public DbSet<Profile> Profiles { get; set; }
-        public DbSet<ResponseToResponse> ResponseToResponses { get; set; }
     }
 }

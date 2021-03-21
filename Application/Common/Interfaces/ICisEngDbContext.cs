@@ -14,10 +14,8 @@ namespace Application.Common.Interfaces
          DbSet<ApplyTraining> ApplyTrainings { get; set; }
          DbSet<Post> Posts { get; set; }
          DbSet<Comment> Comments { get; set; }
-         DbSet<ResponseToComment> ResponseToComments { get; set; }
          DbSet<Follow> Follows { get; set; }
          DbSet<Profile> Profiles { get; set; }
-         DbSet<Domain.Entities.ResponseToResponse> ResponseToResponses { get; set; }
         Task<int> SaveChangesAsync(CancellationToken cancellationToken);
         
     }

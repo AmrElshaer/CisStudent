@@ -14,6 +14,7 @@ namespace Application.Comments.Commonds
         public string Content { get; set; }
         public int? PostId { get; set; }
         public int? CisStudentId { get; set; }
+        public int? CommentId { get; set; }
         public class CreateCommentHander : IRequestHandler<CreateCommentCommond, int>
         {
             private readonly ICisEngDbContext _cisEngDbContext;
@@ -29,6 +30,7 @@ namespace Application.Comments.Commonds
                 comment.CreateDate = DateTime.Now;
                 comment.Content = request.Content;
                 comment.PostId = request.PostId;
+                comment.CommentId = request.CommentId;
                 await _cisEngDbContext.SaveChangesAsync(cancellationToken);
                 return comment.Id;
             }

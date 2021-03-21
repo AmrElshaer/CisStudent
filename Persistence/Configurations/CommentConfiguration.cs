@@ -13,6 +13,7 @@ namespace Persistence.Configurations
         {
             builder.HasOne(c=>c.Post).WithMany(p=>p.Comments).HasForeignKey(c=>c.PostId);
             builder.HasOne(c=>c.CisStudent).WithMany(p=>p.Comments).HasForeignKey(c=>c.CisStudentId);
+            builder.HasOne(c => c.Comm).WithMany(c => c.Comments).HasForeignKey(c=>c.CommentId);
         }
     }
 }

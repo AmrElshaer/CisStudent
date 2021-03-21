@@ -12,6 +12,7 @@ namespace Application.Comments
     {
         public CommentDto()
         {
+            Comments = new List<CommentDto>();
         }
         public int Id { get; set; }
         public string Content { get; set; }
@@ -19,7 +20,7 @@ namespace Application.Comments
         public int? PostId { get; set; }
         public int? CisStudentId { get; set; }
         public CisStudentDto CisStudent { get; set; }
-        public IList<ResponseToCommentDto> ResponseToComments { get; set; }
+        public IList<CommentDto> Comments { get; set; }
         public void Mapping(AutoMapper.Profile profile)
         {
             profile.CreateMap<Comment, CommentDto>();

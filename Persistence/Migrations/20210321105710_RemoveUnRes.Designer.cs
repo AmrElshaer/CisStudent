@@ -3,14 +3,16 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Persistence;
 
 namespace Persistence.Migrations
 {
     [DbContext(typeof(CisEngDbContext))]
-    partial class CisEngDbContextModelSnapshot : ModelSnapshot
+    [Migration("20210321105710_RemoveUnRes")]
+    partial class RemoveUnRes
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

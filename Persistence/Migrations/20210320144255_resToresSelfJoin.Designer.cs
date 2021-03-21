@@ -3,14 +3,16 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Persistence;
 
 namespace Persistence.Migrations
 {
     [DbContext(typeof(CisEngDbContext))]
-    partial class CisEngDbContextModelSnapshot : ModelSnapshot
+    [Migration("20210320144255_resToresSelfJoin")]
+    partial class resToresSelfJoin
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -87,8 +89,6 @@ namespace Persistence.Migrations
 
                     b.Property<int?>("CisStudentId");
 
-                    b.Property<int?>("CommentId");
-
                     b.Property<string>("Content");
 
                     b.Property<DateTime>("CreateDate");
@@ -98,8 +98,6 @@ namespace Persistence.Migrations
                     b.HasKey("Id");
 
                     b.HasIndex("CisStudentId");
-
-                    b.HasIndex("CommentId");
 
                     b.HasIndex("PostId");
 
@@ -214,6 +212,56 @@ namespace Persistence.Migrations
                     b.ToTable("Profiles");
                 });
 
+            modelBuilder.Entity("Domain.Entities.ResponseToComment", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<int?>("CisStudentId");
+
+                    b.Property<int?>("CommentId");
+
+                    b.Property<string>("Content");
+
+                    b.Property<DateTime>("CreateDate");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CisStudentId");
+
+                    b.HasIndex("CommentId");
+
+                    b.ToTable("ResponseToComments");
+                });
+
+            modelBuilder.Entity("Domain.Entities.ResponseToResponse", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<int?>("CisStudentId");
+
+                    b.Property<string>("Content");
+
+                    b.Property<DateTime>("CreateDate");
+
+                    b.Property<int?>("ResponseId");
+
+                    b.Property<int?>("ResponseToCommentId");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CisStudentId");
+
+                    b.HasIndex("ResponseId");
+
+                    b.HasIndex("ResponseToCommentId");
+
+                    b.ToTable("ResponseToResponses");
+                });
+
             modelBuilder.Entity("Domain.Entities.Training", b =>
                 {
                     b.Property<int>("Id")
@@ -265,10 +313,6 @@ namespace Persistence.Migrations
                         .WithMany("Comments")
                         .HasForeignKey("CisStudentId");
 
-                    b.HasOne("Domain.Entities.Comment", "Comm")
-                        .WithMany("Comments")
-                        .HasForeignKey("CommentId");
-
                     b.HasOne("Domain.Entities.Post", "Post")
                         .WithMany("Comments")
                         .HasForeignKey("PostId");
@@ -307,6 +351,32 @@ namespace Persistence.Migrations
                         .WithMany()
                         .HasForeignKey("CisStudentId")
                         .OnDelete(DeleteBehavior.Cascade);
+                });
+
+            modelBuilder.Entity("Domain.Entities.ResponseToComment", b =>
+                {
+                    b.HasOne("Domain.Entities.CisStudent", "CisStudent")
+                        .WithMany("ResponseToComments")
+                        .HasForeignKey("CisStudentId");
+
+                    b.HasOne("Domain.Entities.Comment", "Comment")
+                        .WithMany("ResponseToComments")
+                        .HasForeignKey("CommentId");
+                });
+
+            modelBuilder.Entity("Domain.Entities.ResponseToResponse", b =>
+                {
+                    b.HasOne("Domain.Entities.CisStudent", "CisStudent")
+                        .WithMany("ResponseToResponses")
+                        .HasForeignKey("CisStudentId");
+
+                    b.HasOne("Domain.Entities.ResponseToResponse", "ResponseToRes")
+                        .WithMany("ResponseToResponses")
+                        .HasForeignKey("ResponseId");
+
+                    b.HasOne("Domain.Entities.ResponseToComment", "Comment")
+                        .WithMany("ResponseToResponses")
+                        .HasForeignKey("ResponseToCommentId");
                 });
 
             modelBuilder.Entity("Domain.Entities.Training", b =>

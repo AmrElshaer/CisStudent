@@ -1,10 +1,12 @@
-﻿using Application.Common.Exceptions;
+﻿using Application.Comments;
+using Application.Common.Exceptions;
 using Application.Common.Interfaces;
 using AutoMapper;
 using Domain.Entities;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 using System;
+using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
 namespace Application.StudentPost.Queries
@@ -24,9 +26,8 @@ namespace Application.StudentPost.Queries
             }
             public async Task<PostDto> Handle(GetPostQuery request, CancellationToken cancellationToken)
             {
-                var entity = await _cisEngDbContext.Posts.Include(a => a.CisStudent).Include(a => a.Comments)
-                    .ThenInclude(a => a.ResponseToComments).Include(a=>a.Comments).ThenInclude(a=>a.CisStudent)
-                    .FirstOrDefaultAsync(a=>a.Id==request.Id);
+                var entity = await _cisEngDbContext.Posts.Include(a => a.CisStudent)
+                    .Include(a => a.Comments).FirstOrDefaultAsync(a=>a.Id==request.Id);
                 if (entity == null)
                 {
                     throw new NotFoundException(nameof(Post), request.Id);
@@ -34,6 +35,7 @@ namespace Application.StudentPost.Queries
                 var postDto = _mapper.Map<PostDto>(entity);
                 return postDto;
             }
+          
         }
     }
 }

@@ -6,7 +6,7 @@ namespace Domain.Entities
     {
         public Comment()
         {
-            ResponseToComments = new HashSet<ResponseToComment>();
+            Comments = new HashSet<Comment>();
         }
         public int Id { get; set; }
         public string Content { get; set; }
@@ -15,7 +15,9 @@ namespace Domain.Entities
         public Post Post { get; set; }
         public int? CisStudentId { get; set; }
         public CisStudent CisStudent { get; set; }
-        public ICollection<ResponseToComment> ResponseToComments { get; set; }
+        public int? CommentId { get; set; }
+        public Comment Comm { get; set; }
+        public ICollection<Comment> Comments { get; set; }
 
     }
 }
