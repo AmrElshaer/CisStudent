@@ -3,14 +3,16 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Persistence;
 
 namespace Persistence.Migrations
 {
     [DbContext(typeof(CisEngDbContext))]
-    partial class CisEngDbContextModelSnapshot : ModelSnapshot
+    [Migration("20210327152901_InitLikes")]
+    partial class InitLikes
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -161,8 +163,6 @@ namespace Persistence.Migrations
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<int?>("PostId");
-
-                    b.Property<int>("ReactionIndex");
 
                     b.Property<int?>("StudentId");
 

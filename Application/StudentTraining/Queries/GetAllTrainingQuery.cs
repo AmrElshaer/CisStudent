@@ -11,7 +11,7 @@ namespace Application.StudentTraining.Queries
 {
     public class GetAllTrainingQuery:IRequest<IList<TrainingDto>>
     {
-        public int StudentId { get; set; }
+        public int? StudentId { get; set; }
         public class GetAllTrainingQueryHandler : IRequestHandler<GetAllTrainingQuery, IList<TrainingDto>>
         {
             private readonly ICisEngDbContext _cisEngDbContext;
@@ -25,7 +25,7 @@ namespace Application.StudentTraining.Queries
             public async Task<IList<TrainingDto>> Handle(GetAllTrainingQuery request, CancellationToken cancellationToken)
             {
                 var trainings = await _cisEngDbContext.Trainings.Include(p => p.CisStudent)
-                    .Where(p => p.CisStudentId == request.StudentId).OrderByDescending(p=>p.Id).ProjectTo<TrainingDto>(_mapper.ConfigurationProvider).ToListAsync();
+                    .Where(p =>(request.StudentId==null|| p.CisStudentId == request.StudentId)).OrderByDescending(p=>p.Id).ProjectTo<TrainingDto>(_mapper.ConfigurationProvider).ToListAsync();
                 return trainings;
             }
         }

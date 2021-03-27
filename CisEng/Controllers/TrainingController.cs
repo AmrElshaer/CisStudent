@@ -49,7 +49,7 @@ namespace CisEng.Controllers
         [HttpGet]
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(TrainingDto))]
         [ProducesDefaultResponseType]
-        public async Task<ActionResult<TrainingDto>> GetAllTraining(int studentId)
+        public async Task<ActionResult<TrainingDto>> GetAllTraining(int? studentId)
         {
             var entityDto = await Mediator.Send(new GetAllTrainingQuery() { StudentId = studentId });
             return Ok(entityDto);

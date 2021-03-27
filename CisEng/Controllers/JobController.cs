@@ -48,7 +48,7 @@ namespace CisEng.Controllers
         [HttpGet]
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(JobDto))]
         [ProducesDefaultResponseType]
-        public async Task<ActionResult<JobDto>> GetAllJob(int studentId)
+        public async Task<ActionResult<JobDto>> GetAllJob(int? studentId)
         {
             var entityDto = await Mediator.Send(new GetAllJobQuery() { StudentId = studentId });
             return Ok(entityDto);

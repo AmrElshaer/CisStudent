@@ -14,6 +14,7 @@ namespace Domain.Entities
             ReceiveFollow = new HashSet<Follow>();
             ApplyJobs = new HashSet<ApplyJob>();
             Comments = new HashSet<Comment>();
+            Likes = new HashSet<Like>();
         }
         public int Id { get; set; }
         public string Name { get; set; }
@@ -27,6 +28,6 @@ namespace Domain.Entities
         public ICollection<Training> Trainings { get; set; }
         public ICollection<ApplyTraining> ApplyTrainings { get; set; }
         public ICollection<Comment> Comments { get; set; }
-
+        public ICollection<Like> Likes { get; set; }
     }
 }

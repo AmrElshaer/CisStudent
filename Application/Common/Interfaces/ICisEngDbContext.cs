@@ -16,6 +16,7 @@ namespace Application.Common.Interfaces
          DbSet<Comment> Comments { get; set; }
          DbSet<Follow> Follows { get; set; }
          DbSet<Profile> Profiles { get; set; }
+        DbSet<Like> Likes { get; set; }
         Task<int> SaveChangesAsync(CancellationToken cancellationToken);
         
     }

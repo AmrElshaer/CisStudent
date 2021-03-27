@@ -11,7 +11,7 @@ namespace Application.StudentJob.Queries
 {
     public class GetAllJobQuery:IRequest<IList<JobDto>>
     {
-        public int StudentId { get; set; }
+        public int? StudentId { get; set; }
         public class GetAllJobQueryHandler : IRequestHandler<GetAllJobQuery, IList<JobDto>>
         {
             private readonly ICisEngDbContext _cisEngDbContext;
@@ -25,7 +25,7 @@ namespace Application.StudentJob.Queries
             public async Task<IList<JobDto>> Handle(GetAllJobQuery request, CancellationToken cancellationToken)
             {
                 var trainings = await _cisEngDbContext.Jobs.Include(p => p.CisStudent)
-                    .Where(p => p.CisStudentId == request.StudentId).OrderByDescending(p=>p.Id).ProjectTo<JobDto>(_mapper.ConfigurationProvider).ToListAsync();
+                    .Where(p =>(request.StudentId==null|| p.CisStudentId == request.StudentId)).OrderByDescending(p=>p.Id).ProjectTo<JobDto>(_mapper.ConfigurationProvider).ToListAsync();
                 return trainings;
             }
         }
