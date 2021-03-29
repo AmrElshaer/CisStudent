@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using Application.Common.Exceptions;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
+using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
 
 namespace CisEng.Common
@@ -14,10 +15,12 @@ namespace CisEng.Common
     public class CustomExceptionHandlerMiddleware
     {
         private readonly RequestDelegate _next;
+        private readonly ILogger _logger;
 
-        public CustomExceptionHandlerMiddleware(RequestDelegate next)
+        public CustomExceptionHandlerMiddleware(RequestDelegate next,ILogger<CustomExceptionHandlerMiddleware> logger)
         {
             _next = next;
+            _logger = logger;
         }
 
         public async Task Invoke(HttpContext context)
@@ -28,6 +31,7 @@ namespace CisEng.Common
             }
             catch (Exception ex)
             {
+                _logger.LogError(ex,"Exception Caught");
                 await HandleExceptionAsync(context, ex);
             }
         }
