@@ -11,10 +11,12 @@ namespace Application.StudentProfile.Command.UpIntProfile
     public class UpIntProfileHandler : IRequestHandler<UpIntProfileCommond,int>
     {
         private readonly ICisEngDbContext _cisEngDbContext;
+        private readonly IMediator _mediator;
 
-        public UpIntProfileHandler(ICisEngDbContext cisEngDbContext)
+        public UpIntProfileHandler(ICisEngDbContext cisEngDbContext,IMediator mediator)
         {
             _cisEngDbContext = cisEngDbContext;
+            _mediator = mediator;
         }
         public async Task<int> Handle(UpIntProfileCommond request, CancellationToken cancellationToken)
         {
@@ -27,7 +29,9 @@ namespace Application.StudentProfile.Command.UpIntProfile
             {
                 profile = new Profile();
                 await _cisEngDbContext.Profiles.AddAsync(profile);
-               
+                
+
+
             }
             profile.kind = request.kind;
             profile.Colleage = request.Colleage;

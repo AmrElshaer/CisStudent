@@ -24,6 +24,7 @@ namespace Infrastructure
                       configuration.GetConnectionString("CisEngConnection")));
             services.AddIdentity<ApplicationUser, IdentityRole>().AddEntityFrameworkStores<ApplicationDbContext>();
             services.AddTransient<IJwtFactoryService, JwtFactoryService>();
+            services.AddTransient<INotifierMediatorService, EmailNofifierService>();
             services.Configure<IdentityOptions>(opts => {
                 opts.User.RequireUniqueEmail = true;
                 opts.Password.RequiredLength = 8;
@@ -53,6 +54,15 @@ namespace Infrastructure
                 options.Issuer = jwtAppSettingOptions[nameof(JwtIssuerOptions.Issuer)];
                 options.Audience = jwtAppSettingOptions[nameof(JwtIssuerOptions.Audience)];
                 options.SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(Encoding.ASCII.GetBytes(jwtAppSettingOptions[nameof(JwtIssuerOptions.SigningKey)])), SecurityAlgorithms.HmacSha256);
+            });
+            //Mail Configration
+            var mailSetting = configuration.GetSection(nameof(MailSettings));
+            services.Configure<MailSettings>(a=> {
+                a.DisplayName = mailSetting[nameof(MailSettings.DisplayName)];
+                a.Host = mailSetting[nameof(MailSettings.Host)];
+                a.Password = mailSetting[nameof(MailSettings.Password)];
+                a.Port=Convert.ToInt32(mailSetting[nameof(MailSettings.Port)]);
+                a.Mail= mailSetting[nameof(MailSettings.Mail)];
             });
             return services;
 
