@@ -27,5 +27,6 @@ namespace Persistence
         public DbSet<Follow> Follows { get; set; }
         public DbSet<Profile> Profiles { get; set; }
         public DbSet<Like> Likes { get; set; }
+        public DbSet<Message> Messages { get; set; }
     }
 }

@@ -4,6 +4,7 @@ using System.Reflection;
 using Application;
 using CisEng.Common;
 using Infrastructure;
+using Infrastructure.Hubs;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
@@ -38,7 +39,10 @@ namespace CisEng
                 options.AddPolicy("allowcors",
                 builder =>
                 {
-                    builder.WithOrigins().AllowAnyHeader().AllowAnyMethod().AllowAnyOrigin();
+                    builder.WithOrigins("http://localhost:4200")
+                    .AllowAnyMethod()
+                    .AllowAnyHeader().AllowCredentials()
+                    ;
                 });
             });
             services.AddInfrastructure(Configuration);
@@ -86,6 +90,7 @@ namespace CisEng
         /// <param name="env"></param>
         public void Configure(IApplicationBuilder app, IHostingEnvironment env)
         {
+           
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
@@ -96,11 +101,15 @@ namespace CisEng
                 // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
                 app.UseHsts();
             }
-            app.UseCustomExceptionHandler();
-           
-            app.UseHttpsRedirection();
-            app.UseStaticFiles();
             app.UseCors("allowcors");
+            app.UseCustomExceptionHandler();
+            app.UseStaticFiles();
+            app.UseAuthentication();
+            //ChatHub
+            app.UseSignalR(routes =>
+            {
+                routes.MapHub<ChatHub>("/chatHub");
+            });
             // Enable middleware to serve generated Swagger as a JSON endpoint.
             app.UseSwagger();
             // Enable middleware to serve swagger-ui (HTML, JS, CSS, etc.),
@@ -110,7 +119,7 @@ namespace CisEng
                 c.SwaggerEndpoint("/swagger/v1/swagger.json", "My API V1");
             });
            
-            app.UseAuthentication();
+            
            
             app.UseMvc(routes =>
             {

@@ -15,6 +15,8 @@ namespace Domain.Entities
             ApplyJobs = new HashSet<ApplyJob>();
             Comments = new HashSet<Comment>();
             Likes = new HashSet<Like>();
+            MessagesSend = new HashSet<Message>();
+            MessagesRecieve = new HashSet<Message>();
         }
         public int Id { get; set; }
         public string Name { get; set; }
@@ -29,5 +31,7 @@ namespace Domain.Entities
         public ICollection<ApplyTraining> ApplyTrainings { get; set; }
         public ICollection<Comment> Comments { get; set; }
         public ICollection<Like> Likes { get; set; }
+        public ICollection<Message> MessagesSend { get; set; }
+        public ICollection<Message> MessagesRecieve { get; set; }
     }
 }

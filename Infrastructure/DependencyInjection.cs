@@ -1,5 +1,6 @@
 ﻿using Application.Common.Interfaces;
 using Infrastructure.Authorization;
+using Infrastructure.Hubs;
 using Infrastructure.Identity;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
@@ -25,6 +26,8 @@ namespace Infrastructure
             services.AddIdentity<ApplicationUser, IdentityRole>().AddEntityFrameworkStores<ApplicationDbContext>();
             services.AddTransient<IJwtFactoryService, JwtFactoryService>();
             services.AddTransient<INotifierMediatorService, EmailNofifierService>();
+            services.AddTransient<IChatService, ChatService>();
+            services.AddSingleton<IChatHup, ChatHub>();
             services.Configure<IdentityOptions>(opts => {
                 opts.User.RequireUniqueEmail = true;
                 opts.Password.RequiredLength = 8;
@@ -64,6 +67,8 @@ namespace Infrastructure
                 a.Port=Convert.ToInt32(mailSetting[nameof(MailSettings.Port)]);
                 a.Mail= mailSetting[nameof(MailSettings.Mail)];
             });
+            //SignalR
+            services.AddSignalR();
             return services;
 
         }
