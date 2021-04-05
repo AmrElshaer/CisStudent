@@ -31,6 +31,12 @@ namespace CisEng.Controllers
             var entityId=await  Mediator.Send(new SendMessageCommond() {MessageDto=messageDto });
             return Ok(entityId);
         }
+        /// <summary>
+        /// Get all messages for user conversation
+        /// </summary>
+        /// <param name="fromSTD"></param>
+        /// <param name="toSTD"></param>
+        /// <returns></returns>
         [HttpGet]
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(int))]
         [ProducesDefaultResponseType]
