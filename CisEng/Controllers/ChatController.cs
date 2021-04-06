@@ -1,6 +1,7 @@
 ﻿using Application.StudentMessage;
 using Application.StudentMessage.Commonds;
 using Application.StudentMessage.Queries.GetMessages;
+using Application.StudentMessage.Queries.GetUnSeeMessages;
 using Infrastructure.Hubs;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
@@ -31,12 +32,31 @@ namespace CisEng.Controllers
             var entityId=await  Mediator.Send(new SendMessageCommond() {MessageDto=messageDto });
             return Ok(entityId);
         }
+        /// <summary>
+        /// Get messages
+        /// </summary>
+        /// <param name="fromSTD"></param>
+        /// <param name="toSTD"></param>
+        /// <returns></returns>
         [HttpGet]
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(int))]
         [ProducesDefaultResponseType]
         public async Task<IActionResult> GetMessages(int fromSTD,int toSTD)
         {
             var messages = await Mediator.Send(new GetMessagesQueries() {SendSTDId=fromSTD,RecieveSTDId=toSTD});
+            return Ok(messages);
+        }
+        /// <summary>
+        /// Get missmessages that user didnot see
+        /// </summary>
+        /// <param name="userId"></param>
+        /// <returns></returns>
+        [HttpGet]
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(int))]
+        [ProducesDefaultResponseType]
+        public async Task<IActionResult> GetMissMessages(int userId)
+        {
+            var messages = await Mediator.Send(new GetUnSeeMessageQueries() {UserId=userId });
             return Ok(messages);
         }
     }

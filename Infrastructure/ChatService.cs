@@ -23,6 +23,7 @@ namespace Infrastructure
         {
             await _hubContext.Clients.Client(connectionId).SendAsync("ReciveMessage",message);
         }
+
         
     }
 }
