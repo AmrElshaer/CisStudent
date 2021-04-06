@@ -33,7 +33,7 @@ namespace CisEng.Controllers
             return Ok(entityId);
         }
         /// <summary>
-        /// Get messages
+        /// Get all messages for user conversation
         /// </summary>
         /// <param name="fromSTD"></param>
         /// <param name="toSTD"></param>
