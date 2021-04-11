@@ -1,6 +1,11 @@
-﻿using Application.Common.Interfaces;
+﻿using Application.Account.Commands.Register;
+using Application.Common.Exceptions;
+using Application.Common.Interfaces;
 using Application.Common.Models;
+using Application.Notifications.Models;
+using MediatR;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.WebUtilities;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -11,12 +16,14 @@ namespace Infrastructure.Identity
     public class UserManagerService : IUserManager
     {
         private readonly UserManager<ApplicationUser> _userManager;
+        private readonly IMediator _mediator;
 
-        public UserManagerService(UserManager<ApplicationUser> userManager)
+        public UserManagerService(UserManager<ApplicationUser> userManager,IMediator mediator)
         {
             _userManager = userManager;
+            this._mediator = mediator;
         }
-        public async Task<(Result Result, string UserId)> CreateUserAsync(string name, string password,string email)
+        public async Task<(Result Result, string UserId)> CreateUserAsync(string name, string password,string email,string clientUrl)
         {
             var user = new ApplicationUser
             {
@@ -25,12 +32,29 @@ namespace Infrastructure.Identity
             };
 
             var result = await _userManager.CreateAsync(user, password);
-
+            if (!result.Succeeded)
+            {
+                throw new ValidationException();
+            }
+            var token = await _userManager.GenerateEmailConfirmationTokenAsync(user);
+            var encodeToken = Encoding.UTF8.GetBytes(token);
+            token=  WebEncoders.Base64UrlEncode(encodeToken);
+            var confirmLink = $"{clientUrl}?token={token}&email={email}";
+            // send confirmation email
+            await _mediator.Publish(new UserRegistered()
+            {
+                Message = new MessageDto()
+                {
+                    Body = $"<h1>Click Here to Confirm Account to CisEng</h1> <a href='{confirmLink}'>Confirm Account</a>",
+                    To = email,
+                    Subject = $"Please Confirm your Account"
+                }
+            });
             return (result.ToApplicationResult(), user.Id);
         }
         public async Task<bool> UserIsRegister(string email,string password) {
 
-            var user =await  _userManager.FindByEmailAsync(email);
+            var user =await GetUserAsync(email);
             switch (user)
             {
                 case null:
@@ -43,7 +67,7 @@ namespace Infrastructure.Identity
         public  bool IsUniqueEmail(string email) {
             if (!string.IsNullOrEmpty(email))
             {
-                var applicationUser = _userManager.FindByEmailAsync(email).GetAwaiter().GetResult();
+                var applicationUser = GetUserAsync(email).GetAwaiter().GetResult();
                 if (applicationUser == null) return true;
                 return false;
             }
@@ -62,6 +86,39 @@ namespace Infrastructure.Identity
             }
 
             return true;
+        }
+
+     
+
+        private async Task<ApplicationUser> GetUserAsync(string email)
+        {
+            return await _userManager.FindByEmailAsync(email);
+        }
+        public async Task ConfirmationEmail(string email,string token)
+        {
+            ApplicationUser applicationUser = await GetUserAsync(email);
+            if (applicationUser == null)
+            {
+                throw new NotFoundException(email, email);
+            }
+            var confirmResult = await _userManager.ConfirmEmailAsync(applicationUser, token);
+            if (!confirmResult.Succeeded)
+            {
+                throw new ValidationException();
+            }
+
+        }
+
+      
+
+        public async Task<bool> EmailIsConfirm(string email)
+        {
+            ApplicationUser applicationUser = await GetUserAsync(email);
+            if (applicationUser == null)
+            {
+                throw new NotFoundException(email, email);
+            }
+            return await _userManager.IsEmailConfirmedAsync(applicationUser);
         }
     }
 }

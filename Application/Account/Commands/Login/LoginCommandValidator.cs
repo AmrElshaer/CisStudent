@@ -21,6 +21,14 @@ namespace Application.Account.Commands.Login
                 }
                
             });
+            RuleFor(d => d).Custom((d, context) => {
+                
+                    var isRegister = userManager.EmailIsConfirm(d.Email).GetAwaiter().GetResult();
+                    if (!isRegister)
+                        context.AddFailure("", "Email Not Confirm Please confirm it.");
+                
+
+            });
         }
     }
 }

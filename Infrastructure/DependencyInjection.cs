@@ -23,7 +23,7 @@ namespace Infrastructure
             services.AddDbContext<ApplicationDbContext>(options =>
                   options.UseSqlServer(
                       configuration.GetConnectionString("CisEngConnection")));
-            services.AddIdentity<ApplicationUser, IdentityRole>().AddEntityFrameworkStores<ApplicationDbContext>();
+            services.AddIdentity<ApplicationUser, IdentityRole>().AddEntityFrameworkStores<ApplicationDbContext>().AddDefaultTokenProviders();
             services.AddTransient<IJwtFactoryService, JwtFactoryService>();
             services.AddTransient<INotifierMediatorService, EmailNofifierService>();
             services.AddTransient<IChatService, ChatService>();
@@ -35,6 +35,7 @@ namespace Infrastructure
                 opts.Password.RequireLowercase = false;
                 opts.Password.RequireUppercase = false;
                 opts.Password.RequireDigit = false;
+                opts.User.RequireUniqueEmail = true;
             });
             var jwtAppSettingOptions = configuration.GetSection(nameof(JwtIssuerOptions));
             services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)

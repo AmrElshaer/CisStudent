@@ -5,6 +5,8 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Authorization;
 using CisEng.models;
+using Microsoft.AspNetCore.WebUtilities;
+using System.Text;
 
 namespace CisEng.Controllers
 {
@@ -43,6 +45,18 @@ namespace CisEng.Controllers
                return Ok(new JwtToken{ Token = result.token,Image=result.image });
             
         }
-
+        /// <summary>
+        /// Confirm email for user
+        /// </summary>
+        ///<param name="emailConfirmationCommond"></param>
+        /// <returns></returns>
+        [HttpPost]
+        public async Task<IActionResult> EmailConfirmation(EmailConfirmationCommond emailConfirmationCommond)
+        {
+            var codeDecodedBytes = WebEncoders.Base64UrlDecode(emailConfirmationCommond.Token);
+            emailConfirmationCommond.Token = Encoding.UTF8.GetString(codeDecodedBytes);
+            await this.Mediator.Send(emailConfirmationCommond);
+            return Ok();
+        }
     }
 }

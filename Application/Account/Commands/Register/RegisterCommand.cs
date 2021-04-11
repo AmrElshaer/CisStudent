@@ -12,5 +12,6 @@ namespace Application.Account.Commands.Register
         public  string Email { get; set; }
         public string Password { get; set; }
         public string Image { get; set; }
+        public string ClientUrl { get; set; }
     }
 }
