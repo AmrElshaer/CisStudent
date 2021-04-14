@@ -7,21 +7,20 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace Application.Account.Commands.Register
+namespace Application.Account.Commands.ResetPassword
 {
-   
-    public class UserRegistered : INotification
+    public class ResetPassword : INotification
     {
         public string ConfirmLink;
         public string Email;
 
-        public UserRegistered(string confirmLink, string email)
+        public ResetPassword(string confirmLink, string email)
         {
             ConfirmLink = confirmLink ?? throw new ArgumentNullException(nameof(confirmLink));
             Email = email ?? throw new ArgumentNullException(nameof(email));
         }
 
-        public class UserRegisteredHandler : INotificationHandler<UserRegistered>
+        public class UserRegisteredHandler : INotificationHandler<ResetPassword>
         {
             private readonly INotifierMediatorService _notifierMediatorService;
 
@@ -29,13 +28,13 @@ namespace Application.Account.Commands.Register
             {
                 _notifierMediatorService = notifierMediatorService;
             }
-            public async Task Handle(UserRegistered notification, CancellationToken cancellationToken)
+            public async Task Handle(ResetPassword notification, CancellationToken cancellationToken)
             {
                 var message = new MessageDto()
                 {
-                    Body = $"<h1>Click Here to Confirm Account to CisEng</h1> <a href='{notification.ConfirmLink}'>Confirm Account</a>",
+                    Body = $"<h1>Click Here to Confirm Change Password</h1> <a href='{notification.ConfirmLink}'>Confirm Account</a>",
                     To = notification.Email,
-                    Subject = $"Please Confirm your Account"
+                    Subject = $"Change your password"
                 };
                 await _notifierMediatorService.SendAsync(message);
             }

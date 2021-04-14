@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Authorization;
 using CisEng.models;
 using Microsoft.AspNetCore.WebUtilities;
 using System.Text;
+using Application.Account.Commands.ResetPassword;
 
 namespace CisEng.Controllers
 {
@@ -28,8 +29,9 @@ namespace CisEng.Controllers
         public async Task<IActionResult> Register([FromBody]RegisterCommand command)
         {
 
-            await Mediator.Send(command);
-            return NoContent();
+           var result=  await Mediator.Send(command);
+            if (result.Succeeded) return Ok();
+            return BadRequest(result.Errors);
         }
         /// <summary>
         /// Login User
@@ -57,6 +59,31 @@ namespace CisEng.Controllers
             emailConfirmationCommond.Token = Encoding.UTF8.GetString(codeDecodedBytes);
             await this.Mediator.Send(emailConfirmationCommond);
             return Ok();
+        }
+        /// <summary>
+        /// Forget Password
+        /// </summary>
+        ///<param name="resetPassword"></param>
+        /// <returns></returns>
+        [HttpPost]
+        public async Task<IActionResult> ForgetPassword(ResetPasswordCommond resetPassword)
+        {
+            await Mediator.Send(resetPassword);
+            return Ok();
+        }
+        /// <summary>
+        /// Change Password
+        /// </summary>
+        ///<param name="changePassword"></param>
+        /// <returns></returns>
+        [HttpPost]
+        public async Task<IActionResult> ChangePassword(ChangePasswordCommond changePassword)
+        {
+            var codeDecodedBytes = WebEncoders.Base64UrlDecode(changePassword.Token);
+            changePassword.Token  = Encoding.UTF8.GetString(codeDecodedBytes);
+            var result= await Mediator.Send(changePassword);
+            if (result.Succeeded) return Ok();
+            return BadRequest(result.Errors);
         }
     }
 }

@@ -1,4 +1,5 @@
 ﻿using Application.Account.Commands.Register;
+using Application.Account.Commands.ResetPassword;
 using Application.Common.Exceptions;
 using Application.Common.Interfaces;
 using Application.Common.Models;
@@ -25,33 +26,24 @@ namespace Infrastructure.Identity
         }
         public async Task<(Result Result, string UserId)> CreateUserAsync(string name, string password,string email,string clientUrl)
         {
-            var user = new ApplicationUser
-            {
-                UserName = name,
-                Email = email,
-            };
-
+            var user = new ApplicationUser { UserName = name, Email = email};
             var result = await _userManager.CreateAsync(user, password);
-            if (!result.Succeeded)
-            {
-                throw new ValidationException();
-            }
+            if (!result.Succeeded)throw new ValidationException();
             var token = await _userManager.GenerateEmailConfirmationTokenAsync(user);
-            var encodeToken = Encoding.UTF8.GetBytes(token);
-            token=  WebEncoders.Base64UrlEncode(encodeToken);
-            var confirmLink = $"{clientUrl}?token={token}&email={email}";
-            // send confirmation email
-            await _mediator.Publish(new UserRegistered()
-            {
-                Message = new MessageDto()
-                {
-                    Body = $"<h1>Click Here to Confirm Account to CisEng</h1> <a href='{confirmLink}'>Confirm Account</a>",
-                    To = email,
-                    Subject = $"Please Confirm your Account"
-                }
-            });
+            string confirmLink = await GenerateLink(email, clientUrl, token);
+            await _mediator.Publish(new UserRegistered(confirmLink,email));
             return (result.ToApplicationResult(), user.Id);
         }
+
+        private async Task<string> GenerateLink(string email, string clientUrl,string token)
+        {
+            
+            var encodeToken = Encoding.UTF8.GetBytes(token);
+            token = WebEncoders.Base64UrlEncode(encodeToken);
+            var confirmLink = $"{clientUrl}?token={token}&email={email}";
+            return confirmLink;
+        }
+
         public async Task<bool> UserIsRegister(string email,string password) {
 
             var user =await GetUserAsync(email);
@@ -87,9 +79,6 @@ namespace Infrastructure.Identity
 
             return true;
         }
-
-     
-
         private async Task<ApplicationUser> GetUserAsync(string email)
         {
             return await _userManager.FindByEmailAsync(email);
@@ -97,28 +86,35 @@ namespace Infrastructure.Identity
         public async Task ConfirmationEmail(string email,string token)
         {
             ApplicationUser applicationUser = await GetUserAsync(email);
-            if (applicationUser == null)
-            {
-                throw new NotFoundException(email, email);
-            }
+            if (applicationUser == null) throw new NotFoundException(email, email);
             var confirmResult = await _userManager.ConfirmEmailAsync(applicationUser, token);
-            if (!confirmResult.Succeeded)
-            {
-                throw new ValidationException();
-            }
-
+            if (!confirmResult.Succeeded)throw new ValidationException();
         }
-
-      
-
         public async Task<bool> EmailIsConfirm(string email)
         {
             ApplicationUser applicationUser = await GetUserAsync(email);
-            if (applicationUser == null)
-            {
-                throw new NotFoundException(email, email);
-            }
+            if (applicationUser == null)throw new NotFoundException(email, email);
             return await _userManager.IsEmailConfirmedAsync(applicationUser);
+        }
+        public async Task ForgetPassword(string email,string clientUrl)
+        {
+            var token =await GeneratePasswordToken(email);
+            string confirmLink = await GenerateLink(email, clientUrl, token);
+            await _mediator.Publish(new ResetPassword(confirmLink,email));
+        }
+        private async Task<string> GeneratePasswordToken(string email)
+        {
+            var user = await GetUserAsync(email);
+            if (user == null) throw new NotFoundException(email, email);
+            return await _userManager.GeneratePasswordResetTokenAsync(user);
+        }
+
+        public async Task<Result> ChangePassword(string email, string token, string newPassword)
+        {
+            var user = await GetUserAsync(email);
+            if (user == null) throw new NotFoundException(email, email);
+            var resetPassResult = await _userManager.ResetPasswordAsync(user, token, newPassword);
+            return resetPassResult.ToApplicationResult();
         }
     }
 }

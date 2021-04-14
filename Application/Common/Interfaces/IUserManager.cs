@@ -10,6 +10,8 @@ namespace Application.Common.Interfaces
         Task<bool> UserIsRegister(string email, string password);
         Task ConfirmationEmail(string email, string token);
         Task<bool> EmailIsConfirm(string email);
+        Task ForgetPassword(string email, string clientUrl);
+        Task<Result> ChangePassword(string email, string token,string newPassword);
 
     }
 }
