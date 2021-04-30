@@ -13,6 +13,7 @@ namespace Application.StudentTraining.Commonds.UpSrtTraining
         public string Place { get; set; }
         public string CreateDate { get; set; }
         public string Content { get; set; }
+        public string ContactUs { get; set; }
         public int CisStudentId { get; set; }
     }
 }

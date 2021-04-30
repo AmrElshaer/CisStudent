@@ -12,6 +12,7 @@ namespace Domain.Entities
         public string Place { get; set; }
         public string CreateDate { get; set; }
         public string Content { get; set; }
+        public string ContactUs { get; set; }
         public int CisStudentId { get; set; }
         public CisStudent CisStudent { get; set; }
         public ICollection<ApplyTraining> Applies { get; set; }

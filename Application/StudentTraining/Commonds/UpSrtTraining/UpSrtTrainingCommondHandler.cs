@@ -35,6 +35,7 @@ namespace Application.StudentTraining.Commonds.UpSrtTraining
             training.Place = request.Place;
             training.CreateDate = DateTime.Now.ToString();
             training.CisStudentId = request.CisStudentId;
+            training.ContactUs = request.ContactUs;
             await _cisEngDbContext.SaveChangesAsync(cancellationToken);
             return training.Id;
         }

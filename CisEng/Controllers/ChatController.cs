@@ -14,7 +14,7 @@ using System.Threading.Tasks;
 
 namespace CisEng.Controllers
 {
-    [Authorize(AuthenticationSchemes = "Bearer")]
+    //[Authorize(AuthenticationSchemes = "Bearer")]
     public class ChatController : BaseController
     {
         
