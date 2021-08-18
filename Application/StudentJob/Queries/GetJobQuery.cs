@@ -1,4 +1,5 @@
-﻿using Application.Common.Exceptions;
+﻿using Application.Common.Behaviour;
+using Application.Common.Exceptions;
 using Application.Common.Interfaces;
 using AutoMapper;
 using Domain.Entities;
@@ -24,10 +25,7 @@ namespace Application.StudentJob.Queries
             public async Task<JobDto> Handle(GetJobQuery request, CancellationToken cancellationToken)
             {
                 var entity = await _cisEngDbContext.Jobs.FindAsync(request.Id);
-                if (entity == null)
-                {
-                    throw new NotFoundException(nameof(Job), request.Id);
-                }
+                Guard.Against.Null(entity, request.Id);
                 var postDto = _mapper.Map<JobDto>(entity);
                 return postDto;
             }

@@ -1,4 +1,5 @@
-﻿using Application.Common.Exceptions;
+﻿using Application.Common.Behaviour;
+using Application.Common.Exceptions;
 using Application.Common.Interfaces;
 using Domain.Entities;
 using MediatR;
@@ -22,8 +23,7 @@ namespace Application.StudentTraining.Commonds.UpSrtTraining
             if (request.Id.HasValue)
             {
                 var entity =await _cisEngDbContext.Trainings.FindAsync(request.Id);
-                if (entity==null)
-                    throw new NotFoundException(nameof(Training),request.Id);
+                Guard.Against.Null(entity, request.Id);
                 training = entity;
             }
             else {

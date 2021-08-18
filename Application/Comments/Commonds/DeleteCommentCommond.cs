@@ -1,4 +1,5 @@
-﻿using Application.Common.Exceptions;
+﻿using Application.Common.Behaviour;
+using Application.Common.Exceptions;
 using Application.Common.Interfaces;
 using Domain.Entities;
 using MediatR;
@@ -23,10 +24,7 @@ namespace Application.Comments.Commonds
             public async Task<Unit> Handle(DeleteCommentCommond request, CancellationToken cancellationToken)
             {
                 var entity = await _cisEngDbContext.Comments.FindAsync(request.Id);
-                if (entity == null)
-                {
-                    throw new NotFoundException(nameof(Comment), request.Id);
-                }
+                Guard.Against.Null(entity,request.Id);
                 _cisEngDbContext.Comments.Remove(entity);
                 await _cisEngDbContext.SaveChangesAsync(cancellationToken);
                 return Unit.Value;

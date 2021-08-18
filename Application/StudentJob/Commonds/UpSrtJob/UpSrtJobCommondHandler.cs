@@ -1,4 +1,5 @@
-﻿using Application.Common.Exceptions;
+﻿using Application.Common.Behaviour;
+using Application.Common.Exceptions;
 using Application.Common.Interfaces;
 using Domain.Entities;
 using MediatR;
@@ -22,8 +23,7 @@ namespace Application.StudentJob.Commonds.UpSrtJob
             if (request.Id.HasValue)
             {
                 var entity =await _cisEngDbContext.Jobs.FindAsync(request.Id);
-                if (entity==null)
-                    throw new NotFoundException(nameof(Job),request.Id);
+                Guard.Against.Null(entity, request.Id);
                 job = entity;
             }
             else {

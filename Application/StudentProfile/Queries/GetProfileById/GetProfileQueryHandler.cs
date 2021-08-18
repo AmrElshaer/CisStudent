@@ -1,4 +1,5 @@
-﻿using Application.Common.Exceptions;
+﻿using Application.Common.Behaviour;
+using Application.Common.Exceptions;
 using Application.Common.Interfaces;
 using AutoMapper;
 using MediatR;
@@ -21,10 +22,7 @@ namespace Application.StudentProfile.Queries.GetProfileById
         public async Task<ProfileDto> Handle(GetProfileQuery request, CancellationToken cancellationToken)
         {
             var profile =await _cisEngDbContext.Profiles.Include(p=>p.CisStudent).FirstOrDefaultAsync(p=>p.CisStudentId==request.StudentId);
-            if (profile==null)
-            {
-                 throw new NotFoundException(nameof(StdProfile), request.StudentId);
-            }
+            Guard.Against.Null(profile, request.StudentId);
             return _mapper.Map<ProfileDto>(profile);
 
         }

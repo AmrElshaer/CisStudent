@@ -1,4 +1,5 @@
-﻿using Application.Common.Interfaces;
+﻿using Application.Common.Behaviour;
+using Application.Common.Interfaces;
 using Domain.Entities;
 using MediatR;
 using System;
@@ -24,6 +25,7 @@ namespace Application.StudentProfile.Command.UpIntProfile
             if (request.Id.HasValue)
             {
                 profile = await _cisEngDbContext.Profiles.FindAsync(request.Id.Value);
+                Guard.Against.Null(profile, request.Id);
             }
             else
             {

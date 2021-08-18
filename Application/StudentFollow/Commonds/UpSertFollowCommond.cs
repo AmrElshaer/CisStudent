@@ -1,4 +1,5 @@
-﻿using Application.Common.Exceptions;
+﻿using Application.Common.Behaviour;
+using Application.Common.Exceptions;
 using Application.Common.Interfaces;
 using Application.StudentProfile.Command;
 using Domain.Entities;
@@ -31,8 +32,7 @@ namespace Application.StudentFollow.Commonds
                 if (request.Id.HasValue)
                 {
                     var entity = await _cisEngDbContext.Follows.FindAsync(request.Id);
-                    if (entity == null)
-                        throw new NotFoundException(nameof(Follow), request.Id);
+                    Guard.Against.Null(entity, request.Id);
                     follow = entity;
                 }
                 else
@@ -46,7 +46,7 @@ namespace Application.StudentFollow.Commonds
                          Message=new Notifications.Models.MessageDto()
                          {
                              Body=$"Hi {recieveStudent.Name},{sendStudent.Name} Start Follow you in CisEng",
-                             To=$"amrelsher07@gmail.com",
+                             To= recieveStudent.Email,
                              Subject= $"Hi {recieveStudent.Name},{sendStudent.Name} Start Follow you in CisEng"
                          }
                     });

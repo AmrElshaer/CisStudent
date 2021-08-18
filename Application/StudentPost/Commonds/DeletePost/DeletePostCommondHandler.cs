@@ -1,4 +1,5 @@
-﻿using Application.Common.Exceptions;
+﻿using Application.Common.Behaviour;
+using Application.Common.Exceptions;
 using Application.Common.Interfaces;
 using Domain.Entities;
 using MediatR;
@@ -21,10 +22,7 @@ namespace Application.StudentPost.Commonds.DeletePost
         public async Task<Unit> Handle(DeletePostCommond request, CancellationToken cancellationToken)
         {
             var entity =await _cisEngDbContext.Posts.FindAsync(request.Id);
-            if (entity==null)
-            {
-                throw new NotFoundException(nameof(Post),request.Id);
-            }
+            Guard.Against.Null(entity, request.Id);
             _cisEngDbContext.Posts.Remove(entity);
             await _cisEngDbContext.SaveChangesAsync(cancellationToken);
             return Unit.Value;

@@ -1,4 +1,5 @@
-﻿using Application.Common.Exceptions;
+﻿using Application.Common.Behaviour;
+using Application.Common.Exceptions;
 using Application.Common.Interfaces;
 using AutoMapper;
 using Domain.Entities;
@@ -24,10 +25,7 @@ namespace Application.StudentTraining.Queries
             public async Task<TrainingDto> Handle(GetTrainingQuery request, CancellationToken cancellationToken)
             {
                 var entity = await _cisEngDbContext.Trainings.FindAsync(request.Id);
-                if (entity == null)
-                {
-                    throw new NotFoundException(nameof(Training), request.Id);
-                }
+                Guard.Against.Null(entity, request.Id);
                 var postDto = _mapper.Map<TrainingDto>(entity);
                 return postDto;
             }

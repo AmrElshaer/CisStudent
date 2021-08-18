@@ -41,8 +41,7 @@ namespace CisEng
                 {
                     builder.WithOrigins("http://localhost:4200")
                     .AllowAnyMethod()
-                    .AllowAnyHeader().AllowCredentials()
-                    ;
+                    .AllowAnyHeader().AllowCredentials();
                 });
             });
             services.AddInfrastructure(Configuration);

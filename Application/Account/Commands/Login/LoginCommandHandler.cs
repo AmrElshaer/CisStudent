@@ -25,14 +25,13 @@ namespace Application.Account.Commands.Login
         }
         public async Task<(string token,string image)> Handle(LoginCommand request, CancellationToken cancellationToken)
         {
-
-            var user =await _cisEngDbContext.CisStudents.FirstOrDefaultAsync(s=>s.Email==request.Email);
-            if (user==null)
+            if ((await userManager.UserIsRegister(request.Email, request.Password)))
             {
-                throw new NotFoundException("User",request.Email);
+                var user = await _cisEngDbContext.CisStudents.FirstOrDefaultAsync(s => s.Email == request.Email);
+                var token = await _jwtFactoryService.GenerateEncodedToken(user.Name, user.Id);
+                return (token, user.Image);
             }
-            var token= await _jwtFactoryService.GenerateEncodedToken(user.Name,user.Id);
-            return (token,user.Image);
+            throw new NotFoundException("User",request.Email);
         }
     }
 }

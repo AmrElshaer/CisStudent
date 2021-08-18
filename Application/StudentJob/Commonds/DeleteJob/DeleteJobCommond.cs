@@ -1,4 +1,5 @@
-﻿using Application.Common.Exceptions;
+﻿using Application.Common.Behaviour;
+using Application.Common.Exceptions;
 using Application.Common.Interfaces;
 using Domain.Entities;
 using MediatR;
@@ -21,10 +22,7 @@ namespace Application.StudentJob.Commonds.DeleteJob
             public async Task<Unit> Handle(DeleteJobCommond request, CancellationToken cancellationToken)
             {
                 var entity = await _cisEngDbContext.Jobs.FindAsync(request.Id);
-                if (entity == null)
-                {
-                    throw new NotFoundException(nameof(Job), request.Id);
-                }
+                Guard.Against.Null(entity, request.Id);
                 _cisEngDbContext.Jobs.Remove(entity);
                 await _cisEngDbContext.SaveChangesAsync(cancellationToken);
                 return Unit.Value;

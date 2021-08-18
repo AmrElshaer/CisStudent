@@ -1,4 +1,5 @@
-﻿using Application.Common.Exceptions;
+﻿using Application.Common.Behaviour;
+using Application.Common.Exceptions;
 using Application.Common.Interfaces;
 using Domain.Entities;
 using MediatR;
@@ -22,8 +23,7 @@ namespace Application.StudentPost.Commonds.UpSrtPost
             if (request.Id.HasValue)
             {
                 var entity =await _cisEngDbContext.Posts.FindAsync(request.Id);
-                if (entity==null)
-                    throw new NotFoundException(nameof(Post),request.Id);
+                Guard.Against.Null(entity, request.Id);
                 post = entity;
             }
             else {
