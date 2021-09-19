@@ -1,5 +1,6 @@
 ﻿using System;
 using System.IO;
+using System.Net;
 using System.Reflection;
 using Application;
 using CisEng.Common;
@@ -12,6 +13,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.FileProviders;
+using Microsoft.Extensions.Hosting;
 using Microsoft.OpenApi.Models;
 using Persistence;
 
@@ -20,14 +22,11 @@ namespace CisEng
     public class Startup
     {
         
-        public Startup(IConfiguration configuration,IHostingEnvironment environment)
+        public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
-            _environment = environment;
         }
         public IConfiguration Configuration { get; }
-
-        private readonly IHostingEnvironment _environment;
         /// <summary>
        /// This method gets called by the runtime. Use this method to add services to the container.
         /// </summary>
@@ -47,7 +46,7 @@ namespace CisEng
             services.AddInfrastructure(Configuration);
             services.AddPersistance(Configuration);
             services.AddApplication();
-            services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
+            services.AddMvc();
             
             services.AddSwaggerGen(c =>
             {
@@ -87,13 +86,12 @@ namespace CisEng
         /// </summary>
         /// <param name="app"></param>
         /// <param name="env"></param>
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env)
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
            
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
-                app.UseDatabaseErrorPage();
             }
             else {
                 app.UseExceptionHandler("/Error");
@@ -103,12 +101,10 @@ namespace CisEng
             app.UseCors("allowcors");
             app.UseCustomExceptionHandler();
             app.UseStaticFiles();
+            app.UseRouting();
             app.UseAuthentication();
-            //ChatHub
-            app.UseSignalR(routes =>
-            {
-                routes.MapHub<ChatHub>("/chatHub");
-            });
+            app.UseAuthorization();
+           
             // Enable middleware to serve generated Swagger as a JSON endpoint.
             app.UseSwagger();
             // Enable middleware to serve swagger-ui (HTML, JS, CSS, etc.),
@@ -120,11 +116,12 @@ namespace CisEng
            
             
            
-            app.UseMvc(routes =>
+            app.UseEndpoints(routes =>
             {
-                routes.MapRoute(
+                routes.MapControllerRoute(
                     name: "default",
-                    template: "api/{controller=Account}/{action=Test}/{id?}");
+                    pattern: "api/{controller=Account}/{action=Test}/{id?}");
+                routes.MapHub<ChatHub>("/chatHub");
             });
            
             

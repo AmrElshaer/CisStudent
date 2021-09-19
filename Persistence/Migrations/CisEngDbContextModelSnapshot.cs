@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Persistence;
 
 namespace Persistence.Migrations
@@ -14,21 +15,25 @@ namespace Persistence.Migrations
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "2.2.6-servicing-10079")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128)
+                .HasAnnotation("ProductVersion", "5.0.10")
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
             modelBuilder.Entity("Domain.Entities.ApplyJob", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<int?>("CisStudentId");
+                    b.Property<int?>("CisStudentId")
+                        .HasColumnType("int");
 
-                    b.Property<string>("Content");
+                    b.Property<string>("Content")
+                        .HasColumnType("nvarchar(max)");
 
-                    b.Property<int?>("JobId");
+                    b.Property<int?>("JobId")
+                        .HasColumnType("int");
 
                     b.HasKey("Id");
 
@@ -43,15 +48,20 @@ namespace Persistence.Migrations
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<int?>("CisStudentId");
+                    b.Property<int?>("CisStudentId")
+                        .HasColumnType("int");
 
-                    b.Property<string>("Content");
+                    b.Property<string>("Content")
+                        .HasColumnType("nvarchar(max)");
 
-                    b.Property<DateTime>("CreateDate");
+                    b.Property<DateTime>("CreateDate")
+                        .HasColumnType("datetime2");
 
-                    b.Property<int?>("TrainingId");
+                    b.Property<int?>("TrainingId")
+                        .HasColumnType("int");
 
                     b.HasKey("Id");
 
@@ -66,13 +76,17 @@ namespace Persistence.Migrations
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<string>("Email");
+                    b.Property<string>("Email")
+                        .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("Image");
+                    b.Property<string>("Image")
+                        .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("Name");
+                    b.Property<string>("Name")
+                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
 
@@ -83,17 +97,23 @@ namespace Persistence.Migrations
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<int?>("CisStudentId");
+                    b.Property<int?>("CisStudentId")
+                        .HasColumnType("int");
 
-                    b.Property<int?>("CommentId");
+                    b.Property<int?>("CommentId")
+                        .HasColumnType("int");
 
-                    b.Property<string>("Content");
+                    b.Property<string>("Content")
+                        .HasColumnType("nvarchar(max)");
 
-                    b.Property<DateTime>("CreateDate");
+                    b.Property<DateTime>("CreateDate")
+                        .HasColumnType("datetime2");
 
-                    b.Property<int?>("PostId");
+                    b.Property<int?>("PostId")
+                        .HasColumnType("int");
 
                     b.HasKey("Id");
 
@@ -110,15 +130,20 @@ namespace Persistence.Migrations
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<int?>("CisStudentRecieveId");
+                    b.Property<int?>("CisStudentRecieveId")
+                        .HasColumnType("int");
 
-                    b.Property<int?>("CisStudentSendId");
+                    b.Property<int?>("CisStudentSendId")
+                        .HasColumnType("int");
 
-                    b.Property<DateTime>("CreateDate");
+                    b.Property<DateTime>("CreateDate")
+                        .HasColumnType("datetime2");
 
-                    b.Property<bool>("IsAccepte");
+                    b.Property<bool>("IsAccepte")
+                        .HasColumnType("bit");
 
                     b.HasKey("Id");
 
@@ -133,19 +158,26 @@ namespace Persistence.Migrations
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<int>("CisStudentId");
+                    b.Property<int>("CisStudentId")
+                        .HasColumnType("int");
 
-                    b.Property<string>("ContactUs");
+                    b.Property<string>("ContactUs")
+                        .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("Content");
+                    b.Property<string>("Content")
+                        .HasColumnType("nvarchar(max)");
 
-                    b.Property<DateTime>("CreateDate");
+                    b.Property<DateTime>("CreateDate")
+                        .HasColumnType("datetime2");
 
-                    b.Property<string>("Place");
+                    b.Property<string>("Place")
+                        .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("Technology");
+                    b.Property<string>("Technology")
+                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
 
@@ -158,13 +190,17 @@ namespace Persistence.Migrations
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<int?>("PostId");
+                    b.Property<int?>("PostId")
+                        .HasColumnType("int");
 
-                    b.Property<int>("ReactionIndex");
+                    b.Property<int>("ReactionIndex")
+                        .HasColumnType("int");
 
-                    b.Property<int?>("StudentId");
+                    b.Property<int?>("StudentId")
+                        .HasColumnType("int");
 
                     b.HasKey("Id");
 
@@ -179,17 +215,23 @@ namespace Persistence.Migrations
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<string>("Content");
+                    b.Property<string>("Content")
+                        .HasColumnType("nvarchar(max)");
 
-                    b.Property<DateTime>("CreateDate");
+                    b.Property<DateTime>("CreateDate")
+                        .HasColumnType("datetime2");
 
-                    b.Property<bool>("IsSee");
+                    b.Property<bool>("IsSee")
+                        .HasColumnType("bit");
 
-                    b.Property<int?>("RecieveId");
+                    b.Property<int?>("RecieveId")
+                        .HasColumnType("int");
 
-                    b.Property<int?>("SendId");
+                    b.Property<int?>("SendId")
+                        .HasColumnType("int");
 
                     b.HasKey("Id");
 
@@ -204,15 +246,20 @@ namespace Persistence.Migrations
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<int>("CisStudentId");
+                    b.Property<int>("CisStudentId")
+                        .HasColumnType("int");
 
-                    b.Property<string>("Content");
+                    b.Property<string>("Content")
+                        .HasColumnType("nvarchar(max)");
 
-                    b.Property<DateTime>("CreateDate");
+                    b.Property<DateTime>("CreateDate")
+                        .HasColumnType("datetime2");
 
-                    b.Property<string>("Title");
+                    b.Property<string>("Title")
+                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
 
@@ -225,33 +272,47 @@ namespace Persistence.Migrations
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<string>("Addition");
+                    b.Property<string>("Addition")
+                        .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("Age");
+                    b.Property<string>("Age")
+                        .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("Appreciation");
+                    b.Property<string>("Appreciation")
+                        .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("Carear");
+                    b.Property<string>("Carear")
+                        .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("CisStudentId");
+                    b.Property<int>("CisStudentId")
+                        .HasColumnType("int");
 
-                    b.Property<string>("City");
+                    b.Property<string>("City")
+                        .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("Colleage");
+                    b.Property<string>("Colleage")
+                        .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("Company");
+                    b.Property<string>("Company")
+                        .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("Experience");
+                    b.Property<string>("Experience")
+                        .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("Language");
+                    b.Property<string>("Language")
+                        .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("Programing_Language");
+                    b.Property<string>("Programing_Language")
+                        .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("University");
+                    b.Property<string>("University")
+                        .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("kind");
+                    b.Property<string>("kind")
+                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
 
@@ -264,19 +325,26 @@ namespace Persistence.Migrations
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<int>("CisStudentId");
+                    b.Property<int>("CisStudentId")
+                        .HasColumnType("int");
 
-                    b.Property<string>("ContactUs");
+                    b.Property<string>("ContactUs")
+                        .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("Content");
+                    b.Property<string>("Content")
+                        .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("CreateDate");
+                    b.Property<string>("CreateDate")
+                        .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("Place");
+                    b.Property<string>("Place")
+                        .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("Technology");
+                    b.Property<string>("Technology")
+                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
 
@@ -294,6 +362,10 @@ namespace Persistence.Migrations
                     b.HasOne("Domain.Entities.Job", "Job")
                         .WithMany("Applies")
                         .HasForeignKey("JobId");
+
+                    b.Navigation("CisStudent");
+
+                    b.Navigation("Job");
                 });
 
             modelBuilder.Entity("Domain.Entities.ApplyTraining", b =>
@@ -305,6 +377,10 @@ namespace Persistence.Migrations
                     b.HasOne("Domain.Entities.Training", "Training")
                         .WithMany("Applies")
                         .HasForeignKey("TrainingId");
+
+                    b.Navigation("CisStudent");
+
+                    b.Navigation("Training");
                 });
 
             modelBuilder.Entity("Domain.Entities.Comment", b =>
@@ -320,6 +396,12 @@ namespace Persistence.Migrations
                     b.HasOne("Domain.Entities.Post", "Post")
                         .WithMany("Comments")
                         .HasForeignKey("PostId");
+
+                    b.Navigation("CisStudent");
+
+                    b.Navigation("Comm");
+
+                    b.Navigation("Post");
                 });
 
             modelBuilder.Entity("Domain.Entities.Follow", b =>
@@ -331,6 +413,10 @@ namespace Persistence.Migrations
                     b.HasOne("Domain.Entities.CisStudent", "CisStudentSend")
                         .WithMany("SendFollow")
                         .HasForeignKey("CisStudentSendId");
+
+                    b.Navigation("CisStudentRecieve");
+
+                    b.Navigation("CisStudentSend");
                 });
 
             modelBuilder.Entity("Domain.Entities.Job", b =>
@@ -338,7 +424,10 @@ namespace Persistence.Migrations
                     b.HasOne("Domain.Entities.CisStudent", "CisStudent")
                         .WithMany("Jobs")
                         .HasForeignKey("CisStudentId")
-                        .OnDelete(DeleteBehavior.Cascade);
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("CisStudent");
                 });
 
             modelBuilder.Entity("Domain.Entities.Like", b =>
@@ -350,6 +439,10 @@ namespace Persistence.Migrations
                     b.HasOne("Domain.Entities.CisStudent", "Student")
                         .WithMany("Likes")
                         .HasForeignKey("StudentId");
+
+                    b.Navigation("Post");
+
+                    b.Navigation("Student");
                 });
 
             modelBuilder.Entity("Domain.Entities.Message", b =>
@@ -361,6 +454,10 @@ namespace Persistence.Migrations
                     b.HasOne("Domain.Entities.CisStudent", "SendSTD")
                         .WithMany("MessagesSend")
                         .HasForeignKey("SendId");
+
+                    b.Navigation("RecieveSTD");
+
+                    b.Navigation("SendSTD");
                 });
 
             modelBuilder.Entity("Domain.Entities.Post", b =>
@@ -368,7 +465,10 @@ namespace Persistence.Migrations
                     b.HasOne("Domain.Entities.CisStudent", "CisStudent")
                         .WithMany("Posts")
                         .HasForeignKey("CisStudentId")
-                        .OnDelete(DeleteBehavior.Cascade);
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("CisStudent");
                 });
 
             modelBuilder.Entity("Domain.Entities.Profile", b =>
@@ -376,7 +476,10 @@ namespace Persistence.Migrations
                     b.HasOne("Domain.Entities.CisStudent", "CisStudent")
                         .WithMany()
                         .HasForeignKey("CisStudentId")
-                        .OnDelete(DeleteBehavior.Cascade);
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("CisStudent");
                 });
 
             modelBuilder.Entity("Domain.Entities.Training", b =>
@@ -384,7 +487,57 @@ namespace Persistence.Migrations
                     b.HasOne("Domain.Entities.CisStudent", "CisStudent")
                         .WithMany("Trainings")
                         .HasForeignKey("CisStudentId")
-                        .OnDelete(DeleteBehavior.Cascade);
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("CisStudent");
+                });
+
+            modelBuilder.Entity("Domain.Entities.CisStudent", b =>
+                {
+                    b.Navigation("ApplyJobs");
+
+                    b.Navigation("ApplyTrainings");
+
+                    b.Navigation("Comments");
+
+                    b.Navigation("Jobs");
+
+                    b.Navigation("Likes");
+
+                    b.Navigation("MessagesRecieve");
+
+                    b.Navigation("MessagesSend");
+
+                    b.Navigation("Posts");
+
+                    b.Navigation("ReceiveFollow");
+
+                    b.Navigation("SendFollow");
+
+                    b.Navigation("Trainings");
+                });
+
+            modelBuilder.Entity("Domain.Entities.Comment", b =>
+                {
+                    b.Navigation("Comments");
+                });
+
+            modelBuilder.Entity("Domain.Entities.Job", b =>
+                {
+                    b.Navigation("Applies");
+                });
+
+            modelBuilder.Entity("Domain.Entities.Post", b =>
+                {
+                    b.Navigation("Comments");
+
+                    b.Navigation("Likes");
+                });
+
+            modelBuilder.Entity("Domain.Entities.Training", b =>
+                {
+                    b.Navigation("Applies");
                 });
 #pragma warning restore 612, 618
         }
